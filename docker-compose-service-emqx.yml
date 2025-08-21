@@ -1,0 +1,18 @@
+services:
+  emqx:
+    image: emqx/emqx:5.9.0
+    container_name: emqx
+    restart: always
+    ports:
+      - "18084:1883"     # MQTT TCP
+      - "8083:8083"     # MQTT WebSocket
+      - "8084:8084"     # MQTT Secure WebSocket (WSS)
+      - "18083:18083"   # Dashboard
+    environment:
+      # Enable JWT authentication
+      EMQX_AUTH__JWT__ENABLE: "true"
+      EMQX_AUTH__JWT__SECRET: "super-secret-key"  # must match your backend
+      EMQX_AUTH__JWT__FROM: "authorization"
+      EMQX_AUTH__JWT__VERIFY_CLAIMS: "true"
+      EMQX_AUTH__JWT__CLAIMS__PUB: "mqtt.pub"
+      EMQX_AUTH__JWT__CLAIMS__SUB: "mqtt.sub"
